@@ -1,0 +1,49 @@
+spring:
+  profiles:
+    default: local
+---
+spring:
+  config:
+    activate:
+      on-profile: "local"
+  datasource:
+    url: jdbc:p6spy:mysql://localhost:3336/test?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Seoul&useSSL=false&allowMultiQueries=true&noAccessToProcedureBodies=true&zeroDateTimeBehavior=convertToNull
+    username: root
+    password: root
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+    max-lifetime: 1000
+    idle-timeout: 30000
+    connection-test-query: select 1
+    connection-timeout: 30000
+    minimum-idle: 10
+    maximum-pool-size: 10
+  jpa:
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        default_batch_fetch_size: 100
+        format_sql: true
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    open-in-view: false
+  data:
+    web:
+      pageable:
+        default-page-size: 10
+        max-page-size: 2000
+
+  quartz:
+    job-store-type: jdbc
+    jdbc:
+      initialize-schema: always
+  batch:
+    jdbc:
+      initialize-schema: always
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: true
